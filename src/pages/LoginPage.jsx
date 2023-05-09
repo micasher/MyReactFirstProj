@@ -36,7 +36,6 @@ const LoginPage = () => {
       const { data } = await axios.post("/users/login", inputState);
       localStorage.setItem("token", data.token);
       loggedIn();
-      //move to homepage
       navigate(ROUTES.HOME);
     } catch (err) {
       toast.error("error, not a registered user");

@@ -1,7 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-
 import counterReducer from "./counter";
-// import  counterReducer from "../store/counter"
 import darkThemeReducer from "./darkTheme";
 import authReducer from "./auth";
 

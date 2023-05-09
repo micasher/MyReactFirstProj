@@ -13,14 +13,11 @@ import CallIcon from "@mui/icons-material/Call";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
-import { Fragment } from "react";
 import atom from "../logo.svg";
-import NoPhotographyIcon from "@mui/icons-material/NoPhotography";
 const CardComponent = ({
   img,
   title,
   subTitle,
-  // description,
   id,
   onDelete,
   onEdit,

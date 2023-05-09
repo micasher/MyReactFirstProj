@@ -1,9 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import ClearIcon from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -128,8 +126,6 @@ const ProfilePage = () => {
   const handleBizChange = (ev) => {
     setIsBiz(ev.target.checked);
   };
-  // delete inputState.middleName;
-
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
@@ -182,7 +178,6 @@ const ProfilePage = () => {
             onReset={handleClearClick}
             onRegister={handleBtnClick}
             clickBtnText="Edit Profile"
-            // disableProp={disableEd}
           />
         </Box>
       </Box>
@@ -190,26 +185,3 @@ const ProfilePage = () => {
   );
 };
 export default ProfilePage;
-/* <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleBtnClick}
-          >
-            Edit Profile
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleCancelBtnClick}
-          >
-            Cancel
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleClearClick}
-            startIcon={<ClearIcon />}
-          >
-            Clear
-          </Button> */

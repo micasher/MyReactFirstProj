@@ -10,24 +10,18 @@ import FavCardPage from "../pages/FavCardPage";
 import EditCardPage from "../pages/EditCardPage";
 import ProfilePage from "../pages/ProfilePage";
 import CardDataPage from "../pages/CardDataPage";
-import SandBoxPage from "../pages/SandBoxPage";
-
-import NestedRoutePage from "../pages/NestedRoutePage";
+import NestedRoutePage from "../pages/NestedRoutePage/NestedRoutePage";
 import NestedPage1 from "../pages/NestedRoutePage/NestedPage1";
 import NestedPage2 from "../pages/NestedRoutePage/NestedPage2";
 import RP1 from "../pages/RP1";
 import RP2 from "../pages/RP2";
-import UseMemoPage from "../pages/UseMemoPage";
 import ReRenderPage from "../pages/ReRenderPage/ReRenderPage";
-
 import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SuperProtectedRoute";
 import CreateCardPage from "../pages/CreateCardPage";
 import MyCardsPage from "../pages/MyCards";
 import UsersTable from "../pages/CRMPage";
 import SandboxPage from "../pages/SandBoxPage";
-
-//element={<ProtectedRoute element={<LogoutPage />} />}
 
 const Router = () => {
   return (
@@ -38,7 +32,6 @@ const Router = () => {
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route path={ROUTES.ABOUT} element={<AboutPage />} />
       <Route path={ROUTES.FAV} element={<FavCardPage />} />
-      {/* <Route path={ROUTES.SANDBOX} element={<SandBoxPage />} /> */}
       <Route path={"/cardData/:id"} element={<CardDataPage />} />
       <Route
         path={ROUTES.LOGOUT}
@@ -89,16 +82,6 @@ const Router = () => {
           />
         }
       />
-
-      {/*  <Route path={"/sanbox"} element={<SandBoxPage />}>
-        <Route path="nestedpage1" element={<NestedPage1 />} />
-        <Route path="nestedpage2" element={<NestedPage2 />} />
-        <Route path="/sanbox/usememo" element={<UseMemoPage />} />
-        <Route path="/sanbox/rrp" element={<ReRenderPage />} />
-
-        <Route path="/sanbox/rp1" element={<RP1 />} />
-        <Route path="/sanbox/rp2" element={<RP2 />} />
-      </Route> */}
       <Route
         path={ROUTES.SANDBOX}
         element={

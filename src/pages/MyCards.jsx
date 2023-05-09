@@ -5,9 +5,8 @@ import { Divider, Container, Button } from "@mui/material";
 import { Box, CircularProgress, Grid } from "@mui/material";
 import { useSelector } from "react-redux";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import DeleteIcon from "@mui/icons-material/Delete";
 import CardComponent from "../components/CardComponent";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { toast } from "react-toastify";
 
@@ -24,7 +23,6 @@ const MyCardsPage = () => {
       })
       .catch((err) => {
         console.log(err);
-        // toast.error(err.response.data);
       });
   }, []);
   const handleEditFromInitialCardsArr = (id) => {

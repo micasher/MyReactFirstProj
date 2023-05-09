@@ -10,7 +10,6 @@ import {
   Paper,
   Button,
   Typography,
-  Box,
   Divider,
 } from "@mui/material";
 import { toast } from "react-toastify";
@@ -67,24 +66,22 @@ const CRMPage = () => {
   };
 
   return (
-    <Typography>
-      <Box>
-        <Typography variant="h2" color="primary" align="center">
-          CRM Admin Panel
-        </Typography>
-        <Typography variant="h6" color="primary">
-          Welcome to the CRM Admin Panel, your central hub for efficiently
-          managing and organizing user information. This powerful tool empowers
-          you to effortlessly classify users as business or non-business users,
-          providing you with comprehensive control over their profiles and
-          access privileges. With a user-friendly interface and a robust table
-          displaying all the essential user data, this admin panel simplifies
-          the process of tracking and organizing user information.
-        </Typography>
-        <br />
-        <Divider></Divider>
-        <br />
-      </Box>
+    <div>
+      <Typography variant="h2" color="primary" align="center">
+        CRM Admin Panel
+      </Typography>
+      <Typography variant="h6" color="primary">
+        Welcome to the CRM Admin Panel, your central hub for efficiently
+        managing and organizing user information. This powerful tool empowers
+        you to effortlessly classify users as business or non-business users,
+        providing you with comprehensive control over their profiles and access
+        privileges. With a user-friendly interface and a robust table displaying
+        all the essential user data, this admin panel simplifies the process of
+        tracking and organizing user information.
+      </Typography>
+      <br />
+      <Divider></Divider>
+      <br />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -134,7 +131,7 @@ const CRMPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </Typography>
+    </div>
   );
 };
 

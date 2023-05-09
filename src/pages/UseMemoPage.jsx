@@ -1,4 +1,4 @@
-import { Fragment, useState, useMemo } from "react";
+/* import { Fragment, useState, useMemo } from "react";
 
 const UseMemoPage = () => {
   const [number, setNumber] = useState(0);
@@ -27,3 +27,4 @@ const UseMemoPage = () => {
   );
 };
 export default UseMemoPage;
+ */

@@ -1,31 +1,3 @@
-/* import { Box, Divider } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import NestedRoutePage from "./NestedRoutePage";
-import RP1 from "./RP1";
-import RP2 from "./RP2";
-import UseMemoPage from "./UseMemoPage";
-import ReRenderPage from "./ReRenderPage/ReRenderPage";
-
-const SandBoxPage = () => {
-  return (
-    <Box>
-      <Typography variant="h2" color="primary" align="center">
-        Sand Box
-      </Typography>
-      <Divider></Divider>
-      <br />
-      <NestedRoutePage />
-      ||
-      <RP1 />
-      ||
-      <UseMemoPage />
-      <ReRenderPage />
-    </Box>
-  );
-};
-export default SandBoxPage;
- */
-
 import { Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
 import ExtensionIcon from "@mui/icons-material/Extension";

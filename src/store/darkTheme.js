@@ -20,14 +20,6 @@ const darkThemeSlice = createSlice({
   },
 });
 
-/*
-  const [darkTheme, setDarkTheme] = useState(initialState)
-  const [darkTheme, changeTheme, setToDarkTheme, setToLightTheme] = useStateRedux(initialState)
-  darkThemeSlice.actions = {
-    changeTheme, setToDarkTheme, setToLightTheme
-  }
-*/
-
 export const darkThemeActions = darkThemeSlice.actions;
 
 export default darkThemeSlice.reducer;

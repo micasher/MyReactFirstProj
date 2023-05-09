@@ -13,10 +13,6 @@ const ReRenderPage = () => {
   const handleTxtChange = (e) => {
     setTxt(e.target.value);
   };
-  // const handleBtn2Click = () => {
-  //   console.log("txt from handle btn 2", txt);
-  //   setTxt("");
-  // };
   const handleBtn2Click = useCallback(() => {
     setTxt("");
   }, [txt]);

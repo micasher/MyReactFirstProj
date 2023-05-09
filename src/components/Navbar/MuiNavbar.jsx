@@ -18,7 +18,6 @@ import { authActions } from "../../store/auth";
 import { useNavigate } from "react-router-dom";
 import ProfileComponent from "./ProfileComponent";
 import MuiNavBarHambComponent from "./MuiNavBarHambComponent";
-
 // access to all
 const pages = [
   {
@@ -54,7 +53,6 @@ const avatarPages = [
     url: ROUTES.LOGOUT,
   },
 ];
-//admin/biz pages
 const adminPages = [
   {
     label: "Sand Box",
@@ -71,7 +69,6 @@ const bizPages = [
     url: ROUTES.MYCARD,
   },
 ];
-
 const MuiNavbar = () => {
   const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
@@ -83,15 +80,12 @@ const MuiNavbar = () => {
     (bigPie) => bigPie.darkThemeSlice.isDarkTheme
   );
   const navigate = useNavigate();
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-
   const changeTheme = () => {
     dispatch(darkThemeActions.changeTheme());
   };

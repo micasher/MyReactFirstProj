@@ -1,10 +1,8 @@
 import { AccountCircle } from "@mui/icons-material";
-import { Avatar, IconButton, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, IconButton, Menu, MenuItem } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import NavLinkComponent from "./NavLinkComponent";
-import { useSelector } from "react-redux";
 import axios from "axios";
 
 const ProfileComponent = ({ profilePages, logoutClickProp }) => {
@@ -12,10 +10,6 @@ const ProfileComponent = ({ profilePages, logoutClickProp }) => {
   const [profilePic, setProfilePic] = useState("");
   const [profilePicAlt, setProfilePicAlt] = useState("");
   useEffect(() => {
-    /*
-          useEffect cant handle async ()=>{}
-          this is why we use the old promise way
-        */
     axios
       .get("/users/userInfo")
       .then(({ data }) => {

@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
-import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -47,7 +44,6 @@ const EditCardPage = () => {
       try {
         const errors = validateEditCardParamsSchema({ id });
         if (errors) {
-          // there was errors = incorrect id
           navigate("/");
           return;
         }
@@ -86,7 +82,6 @@ const EditCardPage = () => {
       const joiResponse = validateEditSchema(inputState);
       setInputsErrorsState(joiResponse);
       if (!joiResponse) {
-        //move to homepage
         await axios.put("/cards/" + id, inputState);
         navigate(ROUTES.HOME);
       }
@@ -194,28 +189,3 @@ const EditCardPage = () => {
   );
 };
 export default EditCardPage;
-
-/* <Button
-            disabled={disableEd}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleSaveBtnClick}
-          >
-            Save
-          </Button>
-          <Button
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleCancelBtnClick}
-          >
-            Cancel
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            startIcon={<ClearIcon />}
-            onClick={handleClearClick}
-          >
-            Clear
-          </Button> */

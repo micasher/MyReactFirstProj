@@ -26,7 +26,6 @@ const CardPage = () => {
       try {
         const errors = validateEditCardParamsSchema({ id });
         if (errors) {
-          // there was errors = incorrect id
           navigate("/");
           return;
         }
@@ -53,7 +52,6 @@ const CardPage = () => {
         }
         !newcardState.web && delete newcardState.web;
         !newcardState.state && delete newcardState.state;
-        //* parsing to israeli date
         newcardState.createdAt = new Date(
           newcardState.createdAt
         ).toLocaleDateString("hi");
@@ -65,7 +63,6 @@ const CardPage = () => {
   }, [id]);
 
   const handleCancelBtnClick = (ev) => {
-    //move to homepage/my cards page
     navigate(ROUTES.HOME);
   };
 
@@ -115,8 +112,6 @@ const CardPage = () => {
       >
         <Box component="div" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
-            {/* the ternary condition is for keeping the image url and alt outside the view of the user,
-             but without deleting them as a property so the image will not be damaged*/}
             {cardKeys.map((propOfCard) =>
               propOfCard !== "url" && propOfCard !== "alt" ? (
                 <Grid
