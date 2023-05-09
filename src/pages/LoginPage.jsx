@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,12 +9,11 @@ import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ClearIcon from "@mui/icons-material/Clear";
 import ROUTES from "../routes/ROUTES";
 import validateLoginSchema from "../validation/loginValidation";
 import useLoggedIn from "../hooks/useLoggedIn";
-import { ButtonGroup } from "@mui/material";
 import { toast } from "react-toastify";
+import FormButtonsComponent from "../components/FormButtonsComponent";
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
@@ -25,6 +23,7 @@ const LoginPage = () => {
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
   const loggedIn = useLoggedIn();
   const navigate = useNavigate();
+  const [disableEd, setDisableEdit] = useState(false);
 
   const handleBtnClick = async (ev) => {
     try {
@@ -45,13 +44,33 @@ const LoginPage = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+    const joiResponse = validateLoginSchema(newInputState);
+    if (!joiResponse) {
+      setInputsErrorsState(joiResponse);
+      setDisableEdit(false);
+      return;
+    }
+
+    const inputKeys = Object.keys(inputState);
+    for (const key of inputKeys) {
+      if (inputState && !inputState[key] && key != ev.target.id) {
+        joiResponse[key] = "";
+      }
+    }
+    setInputsErrorsState(joiResponse);
+    setDisableEdit(true);
   };
+
   const handleClearClick = () => {
     setInputState({
       email: "",
       password: "",
     });
     setInputsErrorsState(null);
+  };
+
+  const handleCancelBtnClick = (ev) => {
+    navigate(ROUTES.HOME);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -111,24 +130,13 @@ const LoginPage = () => {
               )}
             </Grid>
           </Grid>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleBtnClick}
-            >
-              Sign In
-            </Button>
-            <Button
-              color="error"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleClearClick}
-              startIcon={<ClearIcon />}
-            >
-              Clear
-            </Button>
-          </ButtonGroup>
+          <FormButtonsComponent
+            onCancel={handleCancelBtnClick}
+            onReset={handleClearClick}
+            onRegister={handleBtnClick}
+            clickBtnText="Sign In"
+            disableProp={disableEd}
+          />
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={ROUTES.REGISTER}>
@@ -145,3 +153,21 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+/* <ButtonGroup>
+            <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleBtnClick}
+            >
+              Sign In
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleClearClick}
+              startIcon={<ClearIcon />}
+            >
+              Clear
+            </Button>
+          </ButtonGroup> */

@@ -13,10 +13,12 @@ import {
   Divider,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import ROUTES from "../routes/ROUTES";
+import { useNavigate } from "react-router-dom";
 
 const CRMPage = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState({});
-
   useEffect(() => {
     axios
       .get("users/getAllUsers")
@@ -64,7 +66,10 @@ const CRMPage = () => {
       console.log(err);
     }
   };
-
+  const whenUserClicked = (ev) => {
+    // console.log(ev.target.id);
+    navigate(`${ROUTES.PROFILECRM}/${ev.target.id}`);
+  };
   return (
     <div>
       <Typography variant="h2" color="primary" align="center">
@@ -114,11 +119,20 @@ const CRMPage = () => {
                       Edit
                     </Button>
                     <Button
+                      id={user._id}
                       variant="contained"
                       color="secondary"
-                      onClick={() => handleDeleteUser(user._id)}
+                      onClick={handleDeleteUser}
                     >
                       Delete
+                    </Button>
+                    <Button
+                      id={user._id}
+                      variant="contained"
+                      color="secondary"
+                      onClick={whenUserClicked}
+                    >
+                      Show more detailes
                     </Button>
                   </TableCell>
                 </TableRow>

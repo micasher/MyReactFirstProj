@@ -22,6 +22,7 @@ import CreateCardPage from "../pages/CreateCardPage";
 import MyCardsPage from "../pages/MyCards";
 import UsersTable from "../pages/CRMPage";
 import SandboxPage from "../pages/SandBoxPage";
+import ProfileDataPage from "../pages/ProfileDataPage";
 
 const Router = () => {
   return (
@@ -53,7 +54,7 @@ const Router = () => {
         element={<ProtectedRoute element={<ProfilePage />} />}
       />
       <Route
-        path="/createcard"
+        path={ROUTES.CREATE}
         element={
           <SuperProtectedRoute
             isAdmin={true}
@@ -63,7 +64,7 @@ const Router = () => {
         }
       />
       <Route
-        path="/mycard"
+        path={ROUTES.MYCARD}
         element={
           <SuperProtectedRoute
             isAdmin={true}
@@ -73,12 +74,22 @@ const Router = () => {
         }
       />
       <Route
-        path="/crm"
+        path={ROUTES.CRM}
         element={
           <SuperProtectedRoute
             isAdmin={true}
-            isBiz={true}
+            isBiz={false}
             element={<UsersTable />}
+          />
+        }
+      />
+      <Route
+        path={ROUTES.PROFILECRM + "/:id"}
+        element={
+          <SuperProtectedRoute
+            isAdmin={true}
+            isBiz={false}
+            element={<ProfileDataPage />}
           />
         }
       />

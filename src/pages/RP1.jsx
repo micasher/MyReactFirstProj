@@ -29,7 +29,7 @@ const RP1 = () => {
       <button onClick={handleSub1}>-1</button>
       <input type="text" value={txt} onChange={handleInputChange} />
       <button onClick={handleAddClick}>add</button>
-      <Link to="/sanbox/rp2">to rp2</Link>
+      <Link to="/sandbox/redux2">to rp2</Link>
     </Fragment>
   );
 };

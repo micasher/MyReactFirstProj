@@ -7,7 +7,7 @@ const RP2 = () => {
   return (
     <Fragment>
       <h2>{counter}</h2>
-      <Link to="/sanbox">to rp1</Link>
+      <Link to="/sandbox/redux1">to rp1</Link>
     </Fragment>
   );
 };

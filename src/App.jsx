@@ -16,6 +16,7 @@ import MuiNavbar from "./components/Navbar/MuiNavbar";
 import Router from "./routes/Router";
 import { useSelector } from "react-redux";
 import useLoggedIn from "./hooks/useLoggedIn";
+import Footer from "./components/Footer";
 
 const light = {
   palette: {
@@ -62,7 +63,7 @@ function App() {
           <MuiNavbar />
         </header>
         <main>{isLoading ? <CircularProgress /> : <Router />}</main>
-        <footer></footer>
+        <Footer></Footer>
       </Container>
     </ThemeProvider>
   );

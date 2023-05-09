@@ -1,9 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import ClearIcon from "@mui/icons-material/Clear";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -16,6 +14,7 @@ import ROUTES from "../routes/ROUTES";
 import axios from "axios";
 import RegisterFieldComponent from "../components/RegisterComponent";
 import { toast } from "react-toastify";
+import FormButtonsComponent from "../components/FormButtonsComponent";
 const RegisterPage = () => {
   const [enableRegister, setenableRegister] = useState(true);
   const [isBiz, setIsBiz] = useState(false);
@@ -113,6 +112,9 @@ const RegisterPage = () => {
   const handleBizChange = (ev) => {
     setIsBiz(ev.target.checked);
   };
+  const handleCancelBtnClick = (ev) => {
+    navigate(ROUTES.HOME);
+  };
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />
@@ -160,23 +162,13 @@ const RegisterPage = () => {
               Business ?
             </Grid>
           </Grid>
-          <Button
-            disabled={enableRegister}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleBtnClick}
-          >
-            Sign Up
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleClearClick}
-            startIcon={<ClearIcon />}
-          >
-            Clear
-          </Button>
+          <FormButtonsComponent
+            onCancel={handleCancelBtnClick}
+            onReset={handleClearClick}
+            onRegister={handleBtnClick}
+            clickBtnText="Sign In"
+            disableProp={enableRegister}
+          />
           <Grid container justifyContent="flex-start">
             <Grid item>
               <Link to={ROUTES.LOGIN}>
@@ -192,3 +184,20 @@ const RegisterPage = () => {
   );
 };
 export default RegisterPage;
+/* <Button
+            disabled={enableRegister}
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleBtnClick}
+          >
+            Sign Up
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleClearClick}
+            startIcon={<ClearIcon />}
+          >
+            Clear
+          </Button> */

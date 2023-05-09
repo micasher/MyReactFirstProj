@@ -11,6 +11,7 @@ const ROUTES = {
   MYCARD: "/mycard",
   SANDBOX: "/sandbox",
   CRM: "/crm",
+  PROFILECRM: "/profilecrm",
 };
 
 export default ROUTES;

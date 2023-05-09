@@ -114,15 +114,7 @@ const CardPage = () => {
           <Grid container spacing={2}>
             {cardKeys.map((propOfCard) =>
               propOfCard !== "url" && propOfCard !== "alt" ? (
-                <Grid
-                  key={propOfCard}
-                  item
-                  sx={{ maxWidth: "15rem" }}
-                  xs={12}
-                  // sm={12}
-                  // md={6}
-                  // xl={4}
-                >
+                <Grid key={propOfCard} item sx={{ maxWidth: "15rem" }} xs={12}>
                   <Typography variant="h6" gutterBottom color="white">
                     <Button color="info" variant="outlined" disabled>
                       {propOfCard}

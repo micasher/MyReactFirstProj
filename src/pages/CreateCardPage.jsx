@@ -19,28 +19,12 @@ import Avatar from "@mui/material/Avatar";
 import { Theme } from "@mui/material";
 import validateCreateSchema from "../validation/createCardValidation";
 import EditCardPageFieldComponent from "../components/EditCardPageComponent";
+import FormButtonsComponent from "../components/FormButtonsComponent";
 
 const CardCreationForm = () => {
   const navigate = useNavigate();
-  const arrOfInputs = [
-    { inputName: "Image URL", idAndKey: "url", isReq: false },
-    { inputName: "Title", idAndKey: "title", isReq: true },
-    { inputName: "Sub Title", idAndKey: "subTitle", isReq: true },
-    { inputName: "Description", idAndKey: "description", isReq: true },
-    { inputName: "Country", idAndKey: "country", isReq: true },
-    { inputName: "City", idAndKey: "city", isReq: true },
-    { inputName: "Street", idAndKey: "street", isReq: true },
-    { inputName: "House Number", idAndKey: "houseNumber", isReq: true },
-    { inputName: "Email", idAndKey: "email", isReq: true },
-    { inputName: "Phone", idAndKey: "phone", isReq: true },
-    { inputName: "State", idAndKey: "state", isReq: false },
-    { inputName: "ZIP Code", idAndKey: "zipCode", isReq: false },
-    { inputName: "Web Page URL", idAndKey: "web", isReq: false },
-    { inputName: "Image Alt", idAndKey: "alt", isReq: false },
-  ];
   const { id } = useParams();
   const [enableEdit, setenableEdit] = useState(true);
-
   const [inputsErrorsState, setInputsErrorsState] = useState({});
   const [inputState, setInputState] = useState({
     url: "",
@@ -58,7 +42,22 @@ const CardCreationForm = () => {
     web: "",
     alt: "",
   });
-
+  const arrOfInputs = [
+    { inputName: "Image URL", idAndKey: "url", isReq: false },
+    { inputName: "Title", idAndKey: "title", isReq: true },
+    { inputName: "Sub Title", idAndKey: "subTitle", isReq: true },
+    { inputName: "Description", idAndKey: "description", isReq: true },
+    { inputName: "Country", idAndKey: "country", isReq: true },
+    { inputName: "City", idAndKey: "city", isReq: true },
+    { inputName: "Street", idAndKey: "street", isReq: true },
+    { inputName: "House Number", idAndKey: "houseNumber", isReq: true },
+    { inputName: "Email", idAndKey: "email", isReq: true },
+    { inputName: "Phone", idAndKey: "phone", isReq: true },
+    { inputName: "State", idAndKey: "state", isReq: false },
+    { inputName: "ZIP Code", idAndKey: "zipCode", isReq: false },
+    { inputName: "Web Page URL", idAndKey: "web", isReq: false },
+    { inputName: "Image Alt", idAndKey: "alt", isReq: false },
+  ];
   const handleSaveBtnClick = async (event) => {
     try {
       const joiResponse = validateCreateSchema(inputState);
@@ -74,7 +73,7 @@ const CardCreationForm = () => {
     }
   };
 
-  const handleCancleBtnClick = () => {
+  const handleCancelBtnClick = (ev) => {
     navigate(ROUTES.HOME);
   };
   const handleInputChange = (ev) => {
@@ -156,8 +155,19 @@ const CardCreationForm = () => {
             </Grid>
           ))}
         </Grid>
-        <Grid>
-          <Button
+        <FormButtonsComponent
+          onCancel={handleCancelBtnClick}
+          onReset={handleClearClick}
+          onRegister={handleSaveBtnClick}
+          clickBtnText="Save"
+          disableProp={enableEdit}
+        />
+      </Box>
+    </Container>
+  );
+};
+export default CardCreationForm;
+/* <Button
             disabled={enableEdit}
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
@@ -180,10 +190,4 @@ const CardCreationForm = () => {
             onClick={handleClearClick}
           >
             Clear
-          </Button>
-        </Grid>
-      </Box>
-    </Container>
-  );
-};
-export default CardCreationForm;
+          </Button> */
