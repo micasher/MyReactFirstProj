@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,122 +9,68 @@ import Container from "@mui/material/Container";
 import Alert from "@mui/material/Alert";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ClearIcon from "@mui/icons-material/Clear";
 import ROUTES from "../routes/ROUTES";
 import validateLoginSchema from "../validation/loginValidation";
 import useLoggedIn from "../hooks/useLoggedIn";
-import { ButtonGroup } from "@mui/material";
 import { toast } from "react-toastify";
-
-const MAX_LOGIN_ATTEMPTS = 3;
-const failedAttempts = 0;
-const LOCKOUT_PERIOD = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-let lockedOutEmails = [];
-let failedAttemptsTest = 0;
-let userEmail = localStorage.getItem('userEmail');
+import FormButtonsComponent from "../components/FormButtonsComponent";
 
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
     email: "",
     password: "",
   });
-
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
-  const [failedAttempts, setFailedAttempts] = useState(0);
   const loggedIn = useLoggedIn();
   const navigate = useNavigate();
+  const [disableEd, setDisableEdit] = useState(false);
 
   const handleBtnClick = async (ev) => {
-    const lastAttempt = localStorage.getItem("lastLoginAttempt");
-    const failedAttempts = localStorage.getItem("failedLoginAttempts") || 0;
-
-    // check if email is locked
-    if (lockedOutEmails.includes(email)) {
-      toast.error("This email has been locked out. Please try again later.");
-      return;
-    }
-
-    // Check if the user is currently locked out
-    const lockoutData = JSON.parse(
-      localStorage.getItem("loginLockout") || "{}"
-    );
-    const lastFailedAttempt = lockoutData.lastFailedAttempt || 0;
-    if (
-      failedAttempts >= MAX_LOGIN_ATTEMPTS &&
-      Date.now() - lastFailedAttempt < LOCKOUT_PERIOD
-    ) {
-      toast.error("Error: You are locked out. Please try again later.");
-      return;
-    }
-
-    // if (failedAttempts >= 3) {
-    //   toast.error("error: try more 24 hours login again");
-    //   return;
-    // }
-
     try {
       const joiResponse = validateLoginSchema(inputState);
       setInputsErrorsState(joiResponse);
       if (joiResponse) {
         return;
       }
-
-
-
-      if (failedAttempts >= 3) {
-        lockedOutEmails.push(userEmail);
-        toast.error("Error: Maximum login attempts reached. This email has been locked out for 24 hours.");
-        setTimeout(() => {
-          const index = lockedOutEmails.indexOf(userEmail);
-          if (index > -1) {
-            lockedOutEmails.splice(index, 1);
-          }
-        }, 86400000); // 24 hours in milliseconds
-      }
-      else{
-
-      }
-
       const { data } = await axios.post("/users/login", inputState);
-
-      localStorage.removeItem("failedLoginAttempts");
-      localStorage.removeItem("lastLoginAttempt");
-      localStorage.setItem("token", data.token);
-
-      setFailedAttempts(0);
-
       localStorage.setItem("token", data.token);
       loggedIn();
-
       navigate(ROUTES.HOME);
     } catch (err) {
-      localStorage.setItem("failedLoginAttempts", failedAttempts++);
-      localStorage.setItem("lastLoginAttempt", Date.now());
-      localStorage.setItem('userEmail', userEmail);
       toast.error("error, not a registered user");
-
-      setFailedAttempts(failedAttempts + 1);
-
-      localStorage.setItem(
-        "loginLockout",
-        JSON.stringify({
-          lastFailedAttempt: Date.now(),
-        })
-      );
     }
   };
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
     setInputState(newInputState);
+    const joiResponse = validateLoginSchema(newInputState);
+    if (!joiResponse) {
+      setInputsErrorsState(joiResponse);
+      setDisableEdit(false);
+      return;
+    }
+
+    const inputKeys = Object.keys(inputState);
+    for (const key of inputKeys) {
+      if (inputState && !inputState[key] && key != ev.target.id) {
+        joiResponse[key] = "";
+      }
+    }
+    setInputsErrorsState(joiResponse);
+    setDisableEdit(true);
   };
+
   const handleClearClick = () => {
     setInputState({
       email: "",
       password: "",
     });
     setInputsErrorsState(null);
+  };
+
+  const handleCancelBtnClick = (ev) => {
+    navigate(ROUTES.HOME);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -185,24 +130,13 @@ const LoginPage = () => {
               )}
             </Grid>
           </Grid>
-          <ButtonGroup>
-            <Button
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleBtnClick}
-            >
-              Sign In
-            </Button>
-            <Button
-              color="error"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleClearClick}
-              startIcon={<ClearIcon />}
-            >
-              Clear
-            </Button>
-          </ButtonGroup>
+          <FormButtonsComponent
+            onCancel={handleCancelBtnClick}
+            onReset={handleClearClick}
+            onRegister={handleBtnClick}
+            clickBtnText="Sign In"
+            disableProp={disableEd}
+          />
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to={ROUTES.REGISTER}>
@@ -219,3 +153,21 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+/* <ButtonGroup>
+            <Button
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleBtnClick}
+            >
+              Sign In
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleClearClick}
+              startIcon={<ClearIcon />}
+            >
+              Clear
+            </Button>
+          </ButtonGroup> */
