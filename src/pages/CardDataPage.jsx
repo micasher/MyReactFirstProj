@@ -76,7 +76,6 @@ const CardPage = () => {
 
   const handleAlertOpen = (message) => {
     const result = window.confirm(message);
-    console.log("hereaaaaaaa", result);
     updateBizNumber(result);
   };
 
@@ -89,7 +88,6 @@ const CardPage = () => {
       await axios.patch(`/cards/bizNumber/${id}`);
       // Fetch the updated card data
       const { data } = await axios.get(`/cards/card/${id}`);
-      console.log(data);
       setBizNumberState(data.bizNumber);
       // Update the bizNumber and other relevant fields in the state
       toast.success("Business number updated successfully");
