@@ -109,7 +109,7 @@ const HomePage = () => {
       <br />
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item._id + Date.now()}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={item._id + Date.now()}>
             <CardComponent
               id={item._id}
               title={item.title}
