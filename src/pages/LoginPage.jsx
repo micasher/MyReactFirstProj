@@ -21,6 +21,7 @@ const LoginPage = () => {
     password: "",
   });
   const [inputsErrorsState, setInputsErrorsState] = useState(null);
+  const [loginAttempts, setLoginAttempts] = useState(0); // Track login attempts
   const loggedIn = useLoggedIn();
   const navigate = useNavigate();
   const [disableEd, setDisableEdit] = useState(false);
@@ -32,14 +33,35 @@ const LoginPage = () => {
       if (joiResponse) {
         return;
       }
+
+      // Check if the user is blocked
+      const blockedUntil = localStorage.getItem("blockedUntil");
+      if (blockedUntil && new Date(blockedUntil) > new Date()) {
+        toast.error("Your account is blocked. Please try again later.");
+        return;
+      }
+
       const { data } = await axios.post("/users/login", inputState);
       localStorage.setItem("token", data.token);
+      setLoginAttempts(0); // Reset login attempts on successful login
       loggedIn();
       navigate(ROUTES.HOME);
     } catch (err) {
-      toast.error("error, not a registered user");
+      toast.error("Error, not a registered user");
+      setLoginAttempts((prevAttempts) => prevAttempts + 1);
+
+      // Block the user if login attempts exceed the limit
+      if (loginAttempts + 1 >= 3) {
+        const blockedUntil = new Date();
+        blockedUntil.setHours(blockedUntil.getHours() + 24);
+        localStorage.setItem("blockedUntil", blockedUntil);
+        toast.error(
+          "Too many failed login attempts. Your account is blocked for 24 hours."
+        );
+      }
     }
   };
+
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
@@ -72,83 +94,93 @@ const LoginPage = () => {
   const handleCancelBtnClick = (ev) => {
     navigate(ROUTES.HOME);
   };
+
+  const blockedUntil = localStorage.getItem("blockedUntil");
+
   return (
-    <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <Box component="div" noValidate sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={inputState.email}
-                onChange={handleInputChange}
-              />
-              {inputsErrorsState && inputsErrorsState.email && (
-                <Alert severity="warning">
-                  {inputsErrorsState.email.map((item) => (
-                    <div key={"email-errors" + item}>{item}</div>
-                  ))}
-                </Alert>
-              )}
+    <>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="div" noValidate sx={{ mt: 3 }}>
+            {blockedUntil && new Date(blockedUntil) > new Date() && (
+              <Alert severity="error">
+                Your account is blocked. Please try again later.
+              </Alert>
+            )}
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={inputState.email}
+                  onChange={handleInputChange}
+                />
+                {inputsErrorsState && inputsErrorsState.email && (
+                  <Alert severity="warning">
+                    {inputsErrorsState.email.map((item) => (
+                      <div key={"email-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={inputState.password}
+                  onChange={handleInputChange}
+                />
+                {inputsErrorsState && inputsErrorsState.password && (
+                  <Alert severity="warning">
+                    {inputsErrorsState.password.map((item) => (
+                      <div key={"password-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                value={inputState.password}
-                onChange={handleInputChange}
-              />
-              {inputsErrorsState && inputsErrorsState.password && (
-                <Alert severity="warning">
-                  {inputsErrorsState.password.map((item) => (
-                    <div key={"password-errors" + item}>{item}</div>
-                  ))}
-                </Alert>
-              )}
+            <FormButtonsComponent
+              onCancel={handleCancelBtnClick}
+              onReset={handleClearClick}
+              onRegister={handleBtnClick}
+              clickBtnText="Sign In"
+              disableProp={disableEd}
+            />
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link to={ROUTES.REGISTER}>
+                  <Typography variant="body2">
+                    Did not have an account? Sign up
+                  </Typography>
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-          <FormButtonsComponent
-            onCancel={handleCancelBtnClick}
-            onReset={handleClearClick}
-            onRegister={handleBtnClick}
-            clickBtnText="Sign In"
-            disableProp={disableEd}
-          />
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link to={ROUTES.REGISTER}>
-                <Typography variant="body2">
-                  Did not have an account? Sign up
-                </Typography>
-              </Link>
-            </Grid>
-          </Grid>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </>
   );
 };
 
