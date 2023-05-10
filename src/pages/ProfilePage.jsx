@@ -126,6 +126,8 @@ const ProfilePage = () => {
   const handleBizChange = (ev) => {
     setIsBiz(ev.target.checked);
   };
+  delete inputState.middleName;
+
   return (
     <Container component="main" maxWidth="md">
       <CssBaseline />

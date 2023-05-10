@@ -8,9 +8,7 @@ import {
   Link,
   Typography,
 } from "@mui/material";
-import ROUTES from "../routes/ROUTES";
 import { useNavigate, useParams } from "react-router-dom";
-import { validateEditCardParamsSchema } from "../validation/editValidation";
 import axios from "axios";
 import { toast } from "react-toastify";
 import atom from "../logo.svg";
@@ -18,58 +16,94 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const CardPage = () => {
+  const navigate = useNavigate();
+  const [bizNumberState, setBizNumberState] = useState(null);
   const { id } = useParams();
   const [cardState, setCardState] = useState(null);
-  const navigate = useNavigate();
+  const [isAlertConfirmed, setIsAlertConfirmed] = useState(false);
+
   useEffect(() => {
-    (async () => {
+    const fetchCardData = async () => {
       try {
-        const errors = validateEditCardParamsSchema({ id });
-        if (errors) {
-          navigate("/");
-          return;
-        }
-        const { data } = await axios.get("/cards/card/" + id);
-        let newcardState = {
-          ...data,
+        const response = await axios.get(`/cards/card/${id}`);
+        const cardData = response.data;
+
+        const newCardState = {
+          ...cardData,
         };
-        if (data.image && data.image.url) {
-          newcardState.url = data.image.url;
+
+        if (cardData.image && cardData.image.url) {
+          newCardState.url = cardData.image.url;
         } else {
-          newcardState.url = "";
+          newCardState.url = "";
         }
-        if (data.image && data.image.alt) {
-          newcardState.alt = data.image.alt;
+
+        if (cardData.image && cardData.image.alt) {
+          newCardState.alt = cardData.image.alt;
         } else {
-          newcardState.alt = "";
+          newCardState.alt = "";
         }
-        delete newcardState.image;
-        delete newcardState.__v;
-        delete newcardState._id;
-        delete newcardState.user_id;
-        if (!newcardState.zipCode || newcardState.zipCode <= 1) {
-          delete newcardState.zipCode;
+
+        delete newCardState.image;
+        delete newCardState.__v;
+        delete newCardState._id;
+        delete newCardState.user_id;
+
+        if (!newCardState.zipCode || newCardState.zipCode <= 1) {
+          delete newCardState.zipCode;
         }
-        !newcardState.web && delete newcardState.web;
-        !newcardState.state && delete newcardState.state;
-        newcardState.createdAt = new Date(
-          newcardState.createdAt
+
+        !newCardState.web && delete newCardState.web;
+        !newCardState.state && delete newCardState.state;
+
+        newCardState.createdAt = new Date(
+          newCardState.createdAt
         ).toLocaleDateString("hi");
-        setCardState(newcardState);
-      } catch (err) {
-        toast.error(err);
+
+        setCardState(newCardState);
+        setBizNumberState(newCardState.bizNumber);
+      } catch (error) {
+        toast.error("Failed to fetch card data");
       }
-    })();
+    };
+
+    fetchCardData();
   }, [id]);
 
-  const handleCancelBtnClick = (ev) => {
-    navigate(ROUTES.HOME);
+  const handleCancelBtnClick = () => {
+    navigate("/");
+  };
+
+  const handleAlertOpen = (message) => {
+    const result = window.confirm(message);
+    console.log("hereaaaaaaa", result);
+    updateBizNumber(result);
+  };
+
+  const updateBizNumber = async (result) => {
+    if (!result) {
+      return;
+    }
+
+    try {
+      await axios.patch(`/cards/bizNumber/${id}`);
+      // Fetch the updated card data
+      const { data } = await axios.get(`/cards/card/${id}`);
+      console.log(data);
+      setBizNumberState(data.bizNumber);
+      // Update the bizNumber and other relevant fields in the state
+      toast.success("Business number updated successfully");
+    } catch (error) {
+      toast.error("Failed to update business number");
+    }
   };
 
   if (!cardState) {
     return <CircularProgress />;
   }
-  let cardKeys = Object.keys(cardState);
+
+  const cardKeys = Object.keys(cardState);
+
   return (
     <Container component="main" maxWidth="xl">
       <br />
@@ -88,9 +122,6 @@ const CardPage = () => {
           alignItems: "center",
         }}
       >
-        <Typography align="center" component="h1" variant="h3">
-          Card Page:
-        </Typography>
         <Box
           component="img"
           sx={{
@@ -115,11 +146,30 @@ const CardPage = () => {
             {cardKeys.map((propOfCard) =>
               propOfCard !== "url" && propOfCard !== "alt" ? (
                 <Grid key={propOfCard} item sx={{ maxWidth: "15rem" }} xs={12}>
-                  <Typography variant="h6" gutterBottom color="white">
+                  <Typography
+                    variant="h6"
+                    gutterBottom
+                    sx={{ color: "primary" }}
+                  >
                     <Button color="info" variant="outlined" disabled>
                       {propOfCard}
                     </Button>{" "}
-                    {propOfCard == "web" ? (
+                    {propOfCard === "bizNumber" ? (
+                      <Fragment>
+                        {bizNumberState ? bizNumberState : cardState.bizNumber}
+                        <Button
+                          variant="outlined"
+                          onClick={() =>
+                            handleAlertOpen(
+                              "Are you sure you want to change the card business number?"
+                            )
+                          }
+                          style={{ marginLeft: 10 }}
+                        >
+                          Change Biz Number
+                        </Button>
+                      </Fragment>
+                    ) : propOfCard === "web" ? (
                       <Link
                         href={cardState.web}
                         underline="hover"
@@ -127,7 +177,7 @@ const CardPage = () => {
                       >
                         {cardState.web}
                       </Link>
-                    ) : propOfCard == "likes" ? (
+                    ) : propOfCard === "likes" ? (
                       <Fragment>
                         {cardState.likes.length}
                         <FavoriteBorderIcon sx={{ ml: 1 }} color="error" />

@@ -153,21 +153,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-/* <ButtonGroup>
-            <Button
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleBtnClick}
-            >
-              Sign In
-            </Button>
-            <Button
-              color="error"
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleClearClick}
-              startIcon={<ClearIcon />}
-            >
-              Clear
-            </Button>
-          </ButtonGroup> */
