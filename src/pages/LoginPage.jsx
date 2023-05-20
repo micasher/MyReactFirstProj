@@ -75,7 +75,7 @@ const LoginPage = () => {
 
     const inputKeys = Object.keys(inputState);
     for (const key of inputKeys) {
-      if (inputState && !inputState[key] && key != ev.target.id) {
+      if (inputState && !inputState[key] && key !== ev.target.id) {
         joiResponse[key] = "";
       }
     }

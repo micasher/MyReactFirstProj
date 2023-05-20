@@ -117,7 +117,7 @@ const EditCardPage = () => {
     setDisableEdit(true);
     const inputKeys = Object.keys(inputState);
     for (const key of inputKeys) {
-      if (inputState && !inputState[key] && key != ev.target.id) {
+      if (inputState && !inputState[key] && key !== ev.target.id) {
         if (joiResponse[key]) {
           joiResponse[key] = "";
         }

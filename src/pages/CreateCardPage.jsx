@@ -1,22 +1,16 @@
-import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
 import Alert from "@mui/material/Alert";
 import EditIcon from "@mui/icons-material/Edit";
-import { useTheme } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import ClearIcon from "@mui/icons-material/Clear";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
-import { Button } from "@mui/material";
 import axios from "axios";
 import atom from "../logo.svg";
 import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
-import { Theme } from "@mui/material";
 import validateCreateSchema from "../validation/createCardValidation";
 import EditCardPageFieldComponent from "../components/EditCardPageComponent";
 import FormButtonsComponent from "../components/FormButtonsComponent";
@@ -88,7 +82,7 @@ const CardCreationForm = () => {
     }
     const inputKeys = Object.keys(inputState);
     for (const key of inputKeys) {
-      if (inputState && !inputState[key] && key != ev.target.id) {
+      if (inputState && !inputState[key] && key !== ev.target.id) {
         joiResponse[key] = "";
       }
     }

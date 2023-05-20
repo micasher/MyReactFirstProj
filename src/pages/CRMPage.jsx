@@ -37,7 +37,7 @@ const CRMPage = () => {
   const handleEditUser = async (ev) => {
     try {
       let newUsersArr = JSON.parse(JSON.stringify(users));
-      let currentUser = newUsersArr.find((user) => user._id == ev.target.id);
+      let currentUser = newUsersArr.find((user) => user._id === ev.target.id);
       await axios.put("/users/userInfo/" + currentUser._id, {
         firstName: currentUser.firstName,
         middleName: currentUser.middleName,
@@ -56,7 +56,7 @@ const CRMPage = () => {
       });
       currentUser.biz = !currentUser.biz;
       newUsersArr.map((user) => {
-        if (user._id == currentUser._id) {
+        if (user._id === currentUser._id) {
           user = { ...currentUser };
         }
       });

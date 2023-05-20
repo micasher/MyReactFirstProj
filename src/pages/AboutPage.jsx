@@ -38,7 +38,7 @@ const AboutPage = () => {
         create a standout business card that will help take your business to the
         next level.
       </p>
-      <img src={myImage} alt="example card image" />
+      <img src={myImage} alt="example card" />
     </Box>
   );
 };

@@ -20,7 +20,7 @@ const CardPage = () => {
   const [bizNumberState, setBizNumberState] = useState(null);
   const { id } = useParams();
   const [cardState, setCardState] = useState(null);
-  const [isAlertConfirmed, setIsAlertConfirmed] = useState(false);
+  // const [isAlertConfirmed, setIsAlertConfirmed] = useState(false);
 
   useEffect(() => {
     const fetchCardData = async () => {

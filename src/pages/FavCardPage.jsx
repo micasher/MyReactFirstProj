@@ -45,7 +45,7 @@ const FabCardPage = () => {
       let { data } = await axios.patch("/cards/card-like/" + id);
       const newCardsArr = JSON.parse(JSON.stringify(likedCardsArrState));
       newCardsArr.map((card) => {
-        if (card._id == data._id) {
+        if (card._id === data._id) {
           card.likes = [...data.likes];
         }
       });
@@ -66,7 +66,7 @@ const FabCardPage = () => {
     try {
       await axios.delete("/cards/" + id); // /cards/:id
       setCardsArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id != id)
+        newCardsArr.filter((item) => item._id !== id)
       );
     } catch (err) {
       console.log("error when deleting", err.response.data);

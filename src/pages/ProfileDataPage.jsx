@@ -18,7 +18,7 @@ const ProfileDataPage = () => {
     axios
       .get("/users/getAllUsers")
       .then(({ data: { users } }) => {
-        let currentProfile = { ...users.find((user) => user._id == id) };
+        let currentProfile = { ...users.find((user) => user._id === id) };
         setUsersArr(users);
         delete currentProfile._id;
         delete currentProfile.__v;
@@ -57,7 +57,7 @@ const ProfileDataPage = () => {
   const handleBizChange = async (ev) => {
     try {
       let newUsersArr = JSON.parse(JSON.stringify(usersArr));
-      let currentUser = newUsersArr.find((user) => user._id == id);
+      let currentUser = newUsersArr.find((user) => user._id === id);
       await axios.put("/users/userInfo/" + currentUser._id, {
         firstName: currentUser.firstName,
         middleName: currentUser.middleName,
@@ -76,7 +76,7 @@ const ProfileDataPage = () => {
       });
       currentUser.biz = !currentUser.biz;
       newUsersArr.map((user) => {
-        if (user._id == currentUser._id) {
+        if (user._id === currentUser._id) {
           user = { ...currentUser };
         }
       });
@@ -120,7 +120,7 @@ const ProfileDataPage = () => {
           <Grid container spacing={2}>
             {profileKeys.map((key) => (
               <Grid item xl={6} sm={12} key={key}>
-                {key == "imageUrl" || key == "imageAlt" ? (
+                {key === "imageUrl" || key === "imageAlt" ? (
                   ""
                 ) : (
                   <Fragment>
@@ -129,7 +129,7 @@ const ProfileDataPage = () => {
                       component="h5"
                       variant="h5"
                     >
-                      {key == "isAdmin" || key == "biz"
+                      {key === "isAdmin" || key === "biz"
                         ? profileState[key]
                           ? `${key}: yes`
                           : `${key}: not`

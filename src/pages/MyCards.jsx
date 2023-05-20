@@ -38,7 +38,7 @@ const MyCardsPage = () => {
     try {
       await axios.delete("/cards/" + id); // /cards/:id
       setCardsArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id != id)
+        newCardsArr.filter((item) => item._id !== id)
       );
     } catch (err) {
       console.log("error when deleting", err.response.data);
@@ -50,7 +50,7 @@ const MyCardsPage = () => {
       let { data } = await axios.patch("/cards/card-like/" + id);
       const newCardsArr = JSON.parse(JSON.stringify(cardsArr));
       newCardsArr.map((card) => {
-        if (card._id == data._id) {
+        if (card._id === data._id) {
           card.likes = [...data.likes];
         }
       });
@@ -67,7 +67,7 @@ const MyCardsPage = () => {
   if (!cardsArr) {
     return <CircularProgress />;
   }
-  if (cardsArr.length == 0) {
+  if (cardsArr.length === 0) {
     return (
       <Container>
         <h1>No Cards Available!</h1>

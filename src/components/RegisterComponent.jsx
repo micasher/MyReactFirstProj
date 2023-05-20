@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React, { Fragment, memo, useState } from "react";
+import React from "react";
 
 const RegisterFieldComponent = ({
   nameOfInput,
