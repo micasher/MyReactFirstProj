@@ -53,6 +53,7 @@ const ProfilePage = () => {
       try {
         const { data } = await axios.get("/users/userInfo/");
         setInputState(data);
+        setIsBiz(data.biz);
       } catch (err) {
         console.log("error from axios", err.response.data);
       }
@@ -101,7 +102,7 @@ const ProfilePage = () => {
     }
     const inputKeys = Object.keys(inputState);
     for (const key of inputKeys) {
-      if (inputState && !inputState[key] && key != ev.target.id) {
+      if (inputState && !inputState[key] && key !== ev.target.id) {
         joiResponse[key] = "";
       }
     }
