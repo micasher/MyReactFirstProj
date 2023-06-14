@@ -15,6 +15,8 @@ import axios from "axios";
 import RegisterFieldComponent from "../components/RegisterComponent";
 import { toast } from "react-toastify";
 import FormButtonsComponent from "../components/FormButtonsComponent";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const RegisterPage = () => {
   const [enableRegister, setenableRegister] = useState(true);
   const [isBiz, setIsBiz] = useState(false);
@@ -35,6 +37,13 @@ const RegisterPage = () => {
   });
   const [inputsErrorsState, setInputsErrorsState] = useState({});
   const navigate = useNavigate();
+  const { payload } = useSelector((bigSlice) => bigSlice.authSlice);
+  useEffect(() => {
+    if (payload) {
+      navigate(ROUTES.HOME);
+      toast.error("Logout first");
+    }
+  }, []);
   const arrOfInputs = [
     { inputName: "First Name", idAndKey: "firstName", isReq: true },
     { inputName: "Middle Name", idAndKey: "middleName", isReq: false },
@@ -184,20 +193,3 @@ const RegisterPage = () => {
   );
 };
 export default RegisterPage;
-/* <Button
-            disabled={enableRegister}
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleBtnClick}
-          >
-            Sign Up
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleClearClick}
-            startIcon={<ClearIcon />}
-          >
-            Clear
-          </Button> */

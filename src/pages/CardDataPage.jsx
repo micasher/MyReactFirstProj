@@ -14,14 +14,14 @@ import { toast } from "react-toastify";
 import atom from "../logo.svg";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useSelector } from "react-redux";
 
 const CardPage = () => {
   const navigate = useNavigate();
   const [bizNumberState, setBizNumberState] = useState(null);
   const { id } = useParams();
   const [cardState, setCardState] = useState(null);
-  // const [isAlertConfirmed, setIsAlertConfirmed] = useState(false);
-
+  const { payload } = useSelector((bigSlice) => bigSlice.authSlice);
   useEffect(() => {
     const fetchCardData = async () => {
       try {
@@ -83,7 +83,6 @@ const CardPage = () => {
     if (!result) {
       return;
     }
-
     try {
       await axios.patch(`/cards/bizNumber/${id}`);
       // Fetch the updated card data
@@ -95,13 +94,10 @@ const CardPage = () => {
       toast.error("Failed to update business number");
     }
   };
-
   if (!cardState) {
     return <CircularProgress />;
   }
-
   const cardKeys = Object.keys(cardState);
-
   return (
     <Container component="main" maxWidth="xl">
       <br />
@@ -155,17 +151,21 @@ const CardPage = () => {
                     {propOfCard === "bizNumber" ? (
                       <Fragment>
                         {bizNumberState ? bizNumberState : cardState.bizNumber}
-                        <Button
-                          variant="outlined"
-                          onClick={() =>
-                            handleAlertOpen(
-                              "Are you sure you want to change the card business number?"
-                            )
-                          }
-                          style={{ marginLeft: 10 }}
-                        >
-                          Change Biz Number
-                        </Button>
+                        {payload && payload.isAdmin ? (
+                          <Button
+                            variant="outlined"
+                            onClick={() =>
+                              handleAlertOpen(
+                                "Are you sure you want to change the card business number?"
+                              )
+                            }
+                            style={{ marginLeft: 10 }}
+                          >
+                            Change Biz Number
+                          </Button>
+                        ) : (
+                          ""
+                        )}
                       </Fragment>
                     ) : propOfCard === "web" ? (
                       <Link
@@ -195,5 +195,4 @@ const CardPage = () => {
     </Container>
   );
 };
-
 export default CardPage;

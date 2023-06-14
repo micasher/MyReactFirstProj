@@ -32,7 +32,10 @@ const Router = () => {
       <Route path={ROUTES.REGISTER} element={<RegisterPage />} />
       <Route path={ROUTES.LOGIN} element={<LoginPage />} />
       <Route path={ROUTES.ABOUT} element={<AboutPage />} />
-      <Route path={ROUTES.FAV} element={<FavCardPage />} />
+      <Route
+        path={ROUTES.FAV}
+        element={<ProtectedRoute element={<FavCardPage />} />}
+      />
       <Route path={"/cardData/:id"} element={<CardDataPage />} />
       <Route
         path={ROUTES.LOGOUT}

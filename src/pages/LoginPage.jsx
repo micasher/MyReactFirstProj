@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
@@ -14,7 +14,7 @@ import validateLoginSchema from "../validation/loginValidation";
 import useLoggedIn from "../hooks/useLoggedIn";
 import { toast } from "react-toastify";
 import FormButtonsComponent from "../components/FormButtonsComponent";
-
+import { useSelector } from "react-redux";
 const LoginPage = () => {
   const [inputState, setInputState] = useState({
     email: "",
@@ -25,7 +25,13 @@ const LoginPage = () => {
   const loggedIn = useLoggedIn();
   const navigate = useNavigate();
   const [disableEd, setDisableEdit] = useState(false);
-
+  const { payload } = useSelector((bigSlice) => bigSlice.authSlice);
+  useEffect(() => {
+    if (payload) {
+      navigate(ROUTES.HOME);
+      toast.error("Logout first");
+    }
+  }, []);
   const handleBtnClick = async (ev) => {
     try {
       const joiResponse = validateLoginSchema(inputState);
@@ -33,14 +39,12 @@ const LoginPage = () => {
       if (joiResponse) {
         return;
       }
-
       // Check if the user is blocked
       const blockedUntil = localStorage.getItem("blockedUntil");
       if (blockedUntil && new Date(blockedUntil) > new Date()) {
         toast.error("Your account is blocked. Please try again later.");
         return;
       }
-
       const { data } = await axios.post("/users/login", inputState);
       localStorage.setItem("token", data.token);
       setLoginAttempts(0); // Reset login attempts on successful login
@@ -49,7 +53,6 @@ const LoginPage = () => {
     } catch (err) {
       toast.error("Error, not a registered user");
       setLoginAttempts((prevAttempts) => prevAttempts + 1);
-
       // Block the user if login attempts exceed the limit
       if (loginAttempts + 1 >= 3) {
         const blockedUntil = new Date();
@@ -61,7 +64,6 @@ const LoginPage = () => {
       }
     }
   };
-
   const handleInputChange = (ev) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[ev.target.id] = ev.target.value;
@@ -72,7 +74,6 @@ const LoginPage = () => {
       setDisableEdit(false);
       return;
     }
-
     const inputKeys = Object.keys(inputState);
     for (const key of inputKeys) {
       if (inputState && !inputState[key] && key !== ev.target.id) {
@@ -82,7 +83,6 @@ const LoginPage = () => {
     setInputsErrorsState(joiResponse);
     setDisableEdit(true);
   };
-
   const handleClearClick = () => {
     setInputState({
       email: "",
@@ -90,13 +90,10 @@ const LoginPage = () => {
     });
     setInputsErrorsState(null);
   };
-
   const handleCancelBtnClick = (ev) => {
     navigate(ROUTES.HOME);
   };
-
   const blockedUntil = localStorage.getItem("blockedUntil");
-
   return (
     <>
       <Container component="main" maxWidth="xs">
